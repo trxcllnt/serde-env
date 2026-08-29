@@ -1,4 +1,4 @@
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use criterion::{criterion_group, criterion_main, Criterion};
 #[derive(serde::Deserialize)]
 #[allow(dead_code)]
 struct MyStruct {
@@ -11,7 +11,7 @@ fn from_env_bench(c: &mut Criterion) {
         [("FIRST_VAR", Some("Hello")), ("SECOND_VAR", Some("World!"))],
         || {
             c.bench_function("from_env", |b| {
-                b.iter(|| black_box(serde_env::from_env::<MyStruct>()))
+                b.iter(|| std::hint::black_box(serde_env::from_env::<MyStruct>()))
             });
         },
     );

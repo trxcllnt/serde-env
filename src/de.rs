@@ -161,7 +161,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize bool: {:?}", &self.0.value());
+        debug!("deserialize bool: {:?}", self.0.value());
         vis.visit_bool(self.0.value().parse().map_err(Error::new)?)
     }
 
@@ -169,7 +169,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize i8: {:?}", &self.0.value());
+        debug!("deserialize i8: {:?}", self.0.value());
         vis.visit_i8(self.0.value().parse().map_err(Error::new)?)
     }
 
@@ -177,7 +177,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize i16: {:?}", &self.0.value());
+        debug!("deserialize i16: {:?}", self.0.value());
         vis.visit_i16(self.0.value().parse().map_err(Error::new)?)
     }
 
@@ -185,7 +185,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize i32: {:?}", &self.0.value());
+        debug!("deserialize i32: {:?}", self.0.value());
         vis.visit_i32(self.0.value().parse().map_err(Error::new)?)
     }
 
@@ -193,7 +193,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize i64: {:?}", &self.0.value());
+        debug!("deserialize i64: {:?}", self.0.value());
         vis.visit_i64(self.0.value().parse().map_err(Error::new)?)
     }
 
@@ -201,7 +201,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize u8: {:?}", &self.0.value());
+        debug!("deserialize u8: {:?}", self.0.value());
 
         vis.visit_u8(self.0.value().parse().map_err(Error::new)?)
     }
@@ -210,7 +210,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize u16: {:?}", &self.0.value());
+        debug!("deserialize u16: {:?}", self.0.value());
 
         vis.visit_u16(self.0.value().parse().map_err(Error::new)?)
     }
@@ -224,7 +224,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize u32: {:?}", &self.0.value());
+        debug!("deserialize u32: {:?}", self.0.value());
 
         vis.visit_u32(self.0.value().parse().map_err(Error::new)?)
     }
@@ -233,7 +233,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize u64: {:?}", &self.0.value());
+        debug!("deserialize u64: {:?}", self.0.value());
 
         vis.visit_u64(self.0.value().parse().map_err(Error::new)?)
     }
@@ -242,7 +242,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize f32: {:?}", &self.0.value());
+        debug!("deserialize f32: {:?}", self.0.value());
 
         vis.visit_f32(self.0.value().parse().map_err(Error::new)?)
     }
@@ -251,7 +251,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize f64: {:?}", &self.0.value());
+        debug!("deserialize f64: {:?}", self.0.value());
 
         vis.visit_f64(self.0.value().parse().map_err(Error::new)?)
     }
@@ -260,7 +260,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize char: {:?}", &self.0.value());
+        debug!("deserialize char: {:?}", self.0.value());
 
         vis.visit_char(self.0.value().parse().map_err(Error::new)?)
     }
@@ -269,7 +269,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize str: {:?}", &self.0.value());
+        debug!("deserialize str: {:?}", self.0.value());
 
         vis.visit_str(self.0.value())
     }
@@ -278,7 +278,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize string: {:?}", &self.0.value());
+        debug!("deserialize string: {:?}", self.0.value());
 
         vis.visit_string(self.0.into_value())
     }
@@ -287,7 +287,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize bytes: {:?}", &self.0.value());
+        debug!("deserialize bytes: {:?}", self.0.value());
 
         vis.visit_bytes(self.0.value().as_bytes())
     }
@@ -296,7 +296,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize byte_buf: {:?}", &self.0.value());
+        debug!("deserialize byte_buf: {:?}", self.0.value());
 
         vis.visit_byte_buf(self.0.into_value().into_bytes())
     }
@@ -305,7 +305,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize option: {:?}", &self.0);
+        debug!("deserialize option: {:?}", self.0);
 
         if self.0.is_empty() {
             vis.visit_none()
@@ -322,7 +322,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize newtype struct: {:?}", &self.0.value());
+        debug!("deserialize newtype struct: {:?}", self.0.value());
 
         vis.visit_newtype_struct(Deserializer(self.0))
     }
@@ -331,7 +331,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize seq: {:?}", &self.0.value());
+        debug!("deserialize seq: {:?}", self.0.value());
 
         let elements = self
             .0
@@ -348,7 +348,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize tuple: {:?}", &self.0.value());
+        debug!("deserialize tuple: {:?}", self.0.value());
 
         let elements = self
             .0
@@ -364,7 +364,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize map: {:#?}", &self.0);
+        debug!("deserialize map: {:#?}", self.0);
 
         let keys = self.0.flatten("");
         vis.visit_map(MapAccessor::new(keys, self.0))
@@ -393,7 +393,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
-        debug!("deserialize identifier: {:?}", &self.0.value());
+        debug!("deserialize identifier: {:?}", self.0.value());
 
         self.deserialize_string(vis)
     }
