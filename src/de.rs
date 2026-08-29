@@ -1,5 +1,7 @@
 use std::collections::BTreeSet;
 
+use crate::cond_log::debug;
+
 use crate::error::Error;
 use crate::value::Node;
 use serde::de::{DeserializeSeed, IntoDeserializer, SeqAccess, Visitor};
@@ -159,6 +161,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize bool: {:?}", &self.0.value());
         vis.visit_bool(self.0.value().parse().map_err(Error::new)?)
     }
 
@@ -166,6 +169,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize i8: {:?}", &self.0.value());
         vis.visit_i8(self.0.value().parse().map_err(Error::new)?)
     }
 
@@ -173,6 +177,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize i16: {:?}", &self.0.value());
         vis.visit_i16(self.0.value().parse().map_err(Error::new)?)
     }
 
@@ -180,6 +185,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize i32: {:?}", &self.0.value());
         vis.visit_i32(self.0.value().parse().map_err(Error::new)?)
     }
 
@@ -187,6 +193,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize i64: {:?}", &self.0.value());
         vis.visit_i64(self.0.value().parse().map_err(Error::new)?)
     }
 
@@ -194,6 +201,8 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize u8: {:?}", &self.0.value());
+
         vis.visit_u8(self.0.value().parse().map_err(Error::new)?)
     }
 
@@ -201,6 +210,8 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize u16: {:?}", &self.0.value());
+
         vis.visit_u16(self.0.value().parse().map_err(Error::new)?)
     }
 
@@ -213,6 +224,8 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize u32: {:?}", &self.0.value());
+
         vis.visit_u32(self.0.value().parse().map_err(Error::new)?)
     }
 
@@ -220,6 +233,8 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize u64: {:?}", &self.0.value());
+
         vis.visit_u64(self.0.value().parse().map_err(Error::new)?)
     }
 
@@ -227,6 +242,8 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize f32: {:?}", &self.0.value());
+
         vis.visit_f32(self.0.value().parse().map_err(Error::new)?)
     }
 
@@ -234,6 +251,8 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize f64: {:?}", &self.0.value());
+
         vis.visit_f64(self.0.value().parse().map_err(Error::new)?)
     }
 
@@ -241,6 +260,8 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize char: {:?}", &self.0.value());
+
         vis.visit_char(self.0.value().parse().map_err(Error::new)?)
     }
 
@@ -248,6 +269,8 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize str: {:?}", &self.0.value());
+
         vis.visit_str(self.0.value())
     }
 
@@ -255,6 +278,8 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize string: {:?}", &self.0.value());
+
         vis.visit_string(self.0.into_value())
     }
 
@@ -262,6 +287,8 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize bytes: {:?}", &self.0.value());
+
         vis.visit_bytes(self.0.value().as_bytes())
     }
 
@@ -269,6 +296,8 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize byte_buf: {:?}", &self.0.value());
+
         vis.visit_byte_buf(self.0.into_value().into_bytes())
     }
 
@@ -276,6 +305,8 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize option: {:?}", &self.0);
+
         if self.0.is_empty() {
             vis.visit_none()
         } else {
@@ -291,6 +322,8 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize newtype struct: {:?}", &self.0.value());
+
         vis.visit_newtype_struct(Deserializer(self.0))
     }
 
@@ -298,6 +331,8 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize seq: {:?}", &self.0.value());
+
         let elements = self
             .0
             .value()
@@ -313,6 +348,8 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize tuple: {:?}", &self.0.value());
+
         let elements = self
             .0
             .value()
@@ -327,21 +364,28 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize map: {:#?}", &self.0);
+
         let keys = self.0.flatten("");
         vis.visit_map(MapAccessor::new(keys, self.0))
     }
 
     fn deserialize_struct<V>(
         self,
-        _name: &'static str,
+        name: &'static str,
         fields: &'static [&'static str],
         vis: V,
     ) -> Result<V::Value, Self::Error>
     where
         V: Visitor<'de>,
     {
-        let keys = fields.iter().map(|v| v.to_string()).collect();
+        debug!(
+            "deserialize struct: name: {} fields: {:?} from {:#?}",
+            name, fields, self.0
+        );
 
+        let keys = fields.iter().map(|v| v.to_string()).collect();
+        debug!("flatten keys: {:?}", keys);
         vis.visit_map(MapAccessor::new(keys, self.0))
     }
 
@@ -349,20 +393,27 @@ impl<'de> de::Deserializer<'de> for Deserializer {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize identifier: {:?}", &self.0.value());
+
         self.deserialize_string(vis)
     }
 
     fn deserialize_enum<V>(
         self,
-        _name: &'static str,
+        name: &'static str,
         variants: &'static [&'static str],
         vis: V,
     ) -> Result<V::Value, Self::Error>
     where
         V: Visitor<'de>,
     {
-        let keys = variants.iter().map(|v| v.to_string()).collect();
+        debug!(
+            "deserialize enum: name: {} variants: {:?} from {:#?}",
+            name, variants, self.0
+        );
 
+        let keys = variants.iter().map(|v| v.to_string()).collect();
+        debug!("flatten keys: {:?}", keys);
         vis.visit_enum(EnumAccessor::new(keys, self.0))
     }
 }
@@ -466,6 +517,8 @@ struct MapAccessor {
 
 impl MapAccessor {
     fn new(keys: BTreeSet<String>, node: Node) -> Self {
+        debug!("access keys {:?} from map", keys);
+
         Self {
             last_value: None,
             keys: keys.into_iter(),
@@ -523,6 +576,8 @@ struct EnumAccessor {
 
 impl EnumAccessor {
     fn new(keys: Vec<String>, node: Node) -> Self {
+        debug!("access keys {:?} from enum", keys);
+
         Self {
             keys: keys.into_iter(),
             node,
@@ -587,8 +642,9 @@ impl<'de> de::VariantAccess<'de> for VariantAccessor {
     where
         V: Visitor<'de>,
     {
+        debug!("deserialize struct variant: fields: {:?}", fields);
         let keys = fields.iter().map(|v| v.to_string()).collect();
-
+        debug!("flatten keys: {:?}", keys);
         visitor.visit_map(MapAccessor::new(keys, self.node))
     }
 }
@@ -618,6 +674,8 @@ mod tests {
 
     #[test]
     fn test_from_env() {
+        let _ = env_logger::try_init();
+
         temp_env::with_vars(
             vec![
                 ("A", Some("123")),
@@ -676,6 +734,8 @@ mod tests {
 
     #[test]
     fn test_ported_from_envy() {
+        let _ = env_logger::try_init();
+
         temp_env::with_vars(
             vec![
                 ("BAR", Some("test")),
@@ -721,6 +781,8 @@ mod tests {
     #[test]
     #[ignore]
     fn test_from_env_alias() {
+        let _ = env_logger::try_init();
+
         temp_env::with_vars(vec![("meta_log_level", Some("DEBUG"))], || {
             let t: TestStructAlias = from_env().expect("must success");
             assert_eq!(
@@ -739,6 +801,8 @@ mod tests {
 
     #[test]
     fn test_from_env_flat() {
+        let _ = env_logger::try_init();
+
         temp_env::with_vars(vec![("meta_log_level", Some("DEBUG"))], || {
             let t: TestStructFlat = from_env().expect("must success");
             assert_eq!(
@@ -752,6 +816,8 @@ mod tests {
 
     #[test]
     fn test_from_env_flat_upper() {
+        let _ = env_logger::try_init();
+
         temp_env::with_vars(vec![("META_LOG_LEVEL", Some("DEBUG"))], || {
             let t: TestStructFlat = from_env().expect("must success");
             assert_eq!(
@@ -778,6 +844,8 @@ mod tests {
 
     #[test]
     fn test_from_env_flat_with_default() {
+        let _ = env_logger::try_init();
+
         temp_env::with_vars(vec![("meta_log_level", Some("DEBUG"))], || {
             let t: TestStructFlatWithDefault = from_env().expect("must success");
             assert_eq!(
@@ -791,6 +859,8 @@ mod tests {
 
     #[test]
     fn test_from_env_flat_upper_with_default() {
+        let _ = env_logger::try_init();
+
         temp_env::with_vars(vec![("META_LOG_LEVEL", Some("DEBUG"))], || {
             let t: TestStructFlatWithDefault = from_env().expect("must success");
             assert_eq!(
@@ -804,6 +874,8 @@ mod tests {
 
     #[test]
     fn test_from_env_as_map() {
+        let _ = env_logger::try_init();
+
         temp_env::with_vars(vec![("METASRV_LOG_LEVEL", Some("DEBUG"))], || {
             let t: HashMap<String, String> = from_env().expect("must success");
             assert_eq!(t["metasrv_log_level"], "DEBUG".to_string())
@@ -829,6 +901,8 @@ mod tests {
 
     #[test]
     fn test_from_env_externally_enum() {
+        let _ = env_logger::try_init();
+
         temp_env::with_vars(vec![("FOO", Some("X"))], || {
             let t: ExternallyEnumStruct = from_env().expect("must success");
             assert_eq!(t.foo, ExternallyEnum::X)
@@ -914,6 +988,8 @@ mod tests {
     #[test]
     #[ignore]
     fn test_from_env_internally_enum() {
+        let _ = env_logger::try_init();
+
         temp_env::with_vars(vec![("FOO_TYPE", Some("X"))], || {
             let t: InternallyEnumStruct = from_env().expect("must success");
             assert_eq!(t.foo, InternallyEnum::X)
@@ -950,6 +1026,8 @@ mod tests {
 
     #[test]
     fn double_option() {
+        let _ = env_logger::try_init();
+
         temp_env::with_var("INNER_VAL", Some("2"), || {
             let t: DoubleOptionOuter = from_env().expect("must success");
             assert_eq!(

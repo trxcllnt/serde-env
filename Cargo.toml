@@ -11,13 +11,17 @@ version = "0.3.0"
 
 [dependencies]
 serde = "1"
+log = { version = "0.4", optional = true }
 
 [dev-dependencies]
 serde = { version = "1", features = ["derive"] }
 serde_with = { version = "3", features = ["json"] }
 temp-env = "0.3"
+env_logger = "0.11"
 criterion = { version = "0.7", features = ["html_reports"] }
 
+[features]
+log = ["dep:log"]
 [[bench]]
 name = "from_env"
 harness = false
