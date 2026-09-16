@@ -746,9 +746,7 @@ mod tests {
         log_level: String,
     }
 
-    // We are not support alias now.
     #[test]
-    #[ignore]
     fn test_from_env_alias() {
         temp_env::with_vars(vec![("meta_log_level", Some("DEBUG"))], || {
             let t: TestStructAlias = from_env().expect("must success");
