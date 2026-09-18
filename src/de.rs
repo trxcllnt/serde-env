@@ -155,6 +155,7 @@ impl<'de> de::Deserializer<'de> for Deserializer {
         V: Visitor<'de>,
     {
         let v = self.0.value();
+        debug!("deserialize_any v={v}");
         if v.is_empty() {
             self.deserialize_map(vis)
         } else if let Ok(v) = v.parse::<i8>() {
@@ -622,12 +623,19 @@ impl<'de> de::EnumAccess<'de> for EnumAccessor {
     where
         V: DeserializeSeed<'de>,
     {
+        debug!("enum variant {} from {:?}", self.node.value(), self.keys);
+
         let key = self
             .keys
             .find(|key| self.node.value() == key)
             .ok_or_else(|| de::Error::custom("no variant found"))?;
 
-        let variant = VariantAccessor::new(self.node);
+        let node = self.node.get(&key.to_lowercase()).unwrap_or(&self.node);
+
+        debug!("enum variant {} node: {node:?}", self.node.value());
+
+        let variant = VariantAccessor::new(node.clone());
+
         Ok((seed.deserialize(key.into_deserializer())?, variant))
     }
 }
@@ -915,6 +923,15 @@ mod tests {
     }
 
     #[derive(Deserialize, PartialEq, Debug)]
+    #[serde(rename_all = "lowercase")]
+    enum ExternallyEnumInner {
+        #[serde(rename = "a")]
+        InnerA { foo: String },
+        #[serde(rename = "b")]
+        InnerB { bar: String },
+    }
+
+    #[derive(Deserialize, PartialEq, Debug)]
     struct ExternallyEnumStruct {
         foo: ExternallyEnum,
     }
@@ -924,6 +941,7 @@ mod tests {
         X,
         Y(EnumNewtype),
         Z { a: i32 },
+        I(ExternallyEnumInner),
     }
 
     #[test]
@@ -949,6 +967,36 @@ mod tests {
             let t: ExternallyEnumStruct = from_env().expect("must success");
             assert_eq!(t.foo, ExternallyEnum::Z { a: 1 })
         });
+
+        temp_env::with_vars(
+            vec![
+                ("FOO", Some("I")),
+                ("FOO_I", Some("a")),
+                ("FOO_I_FOO", Some("foo")),
+            ],
+            || {
+                let t: ExternallyEnumStruct = from_env().expect("must success");
+                assert_eq!(
+                    t.foo,
+                    ExternallyEnum::I(ExternallyEnumInner::InnerA { foo: "foo".into() })
+                )
+            },
+        );
+
+        temp_env::with_vars(
+            vec![
+                ("FOO", Some("I")),
+                ("FOO_I", Some("b")),
+                ("FOO_I_BAR", Some("bar")),
+            ],
+            || {
+                let t: ExternallyEnumStruct = from_env().expect("must success");
+                assert_eq!(
+                    t.foo,
+                    ExternallyEnum::I(ExternallyEnumInner::InnerB { bar: "bar".into() })
+                )
+            },
+        );
     }
 
     #[derive(Deserialize, PartialEq, Debug)]
